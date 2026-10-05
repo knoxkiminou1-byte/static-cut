@@ -265,7 +265,7 @@
   function wraith(x, y) {
     var e = base('wraith', x, y, 16, 2);
     e.speed = 85;
-    e.solid = 0;            // 0 = shimmer, 1 = fully solid
+    e.solid = 0;            // 0 = blank (not a pixel), 1 = fully solid
     e.revealed = false;     // reveal burst fired for this mute press
     e.intangible = true;    // game.js skips touch damage while true
     e.toneT = 1 + Math.random() * 2; // faint positional tone timer (the ONLY unmuted tell)
