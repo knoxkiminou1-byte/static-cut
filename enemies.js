@@ -258,7 +258,8 @@
   }
 
   /* ---- WRAITH: a frequency with no body. Silence is the only way it becomes visible. ----
-   * Unmuted: faint shimmer, intangible — bullets pass through, contact is harmless.
+   * Unmuted: blank frame (not a pixel), intangible — bullets fly through with zero
+   * feedback, contact harmless. The ONLY unmuted tell is a faint positional tone.
    * Muted: snaps solid (reveal burst), vulnerable, and kills under silence are counter-kills.
    * This is the frame Grok asked for: a correct mute is the ONLY way the enemy becomes visible. */
   function wraith(x, y) {
@@ -275,12 +276,13 @@
       this.solid += (target - this.solid) * Math.min(1, dt * 7);
       this.intangible = !w.muted;
       if (!w.muted) this.revealed = false;
-      // the only unmuted tell is a tone, not a pixel: a faint frequency ping
+      // the only unmuted tell is a tone, not a pixel: a faint POSITIONAL frequency ping
       if (!w.muted && this.solid < 0.5) {
         this.toneT -= dt;
         if (this.toneT <= 0) {
           this.toneT = 2.4 + Math.random() * 1.6;
-          if (w.audio) w.audio._blip(1150 + Math.random() * 500, 0.14, 0.06, 'sine');
+          if (w.audio) w.audio._blip(1150 + Math.random() * 500, 0.14, 0.06, 'sine',
+                                     (this.x / w.W) * 2 - 1); // pan: the tone is a place
         }
       }
       // the reveal frame: correct mute snaps it into the picture

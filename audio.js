@@ -229,12 +229,20 @@
   };
 
   // ---- one-shots ----
-  Audio.prototype._blip = function (freq, dur, v, type) {
+  Audio.prototype._blip = function (freq, dur, v, type, pan) {
     if (!this.ctx || !this._voice(1)) return;
     var ctx = this.ctx, t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
     o.type = type || 'square'; o.frequency.value = freq;
     g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    o.connect(g); g.connect(this.sfxBus); o.start(t); o.stop(t + dur + 0.02);
+    o.connect(g);
+    if (typeof pan === 'number' && ctx.createStereoPanner) {
+      var p = ctx.createStereoPanner();
+      p.pan.value = Math.max(-1, Math.min(1, pan));
+      g.connect(p); p.connect(this.sfxBus);
+    } else {
+      g.connect(this.sfxBus);
+    }
+    o.start(t); o.stop(t + dur + 0.02);
   };
   Audio.prototype.shoot = function () { this._blip(880 + Math.random() * 120, 0.07, 0.16); };
   Audio.prototype.hit = function () { this._blip(220, 0.12, 0.3, 'sawtooth'); };
