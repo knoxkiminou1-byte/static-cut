@@ -1,0 +1,144 @@
+/* STATIC CUT — style.css
+ * Palette: charcoal #11120F, dirty bone #D8D0B8, oxidized brass, phosphor #7FA66A, vermilion #D94A32.
+ */
+:root {
+  --char: #11120F;
+  --bone: #D8D0B8;
+  --bone-dim: #8a7f5c;
+  --brass: #8a6f3a;
+  --phos: #7FA66A;
+  --verm: #D94A32;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0a0b09;
+  color: var(--bone);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  min-height: 100%;
+}
+
+.cabinet {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(127,166,106,0.06), transparent 60%),
+    #0a0b09;
+}
+
+.topbar {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(138,111,58,0.35);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.topbar .brand { color: var(--bone); font-weight: 700; }
+.topbar .tag { color: var(--phos); }
+
+.stage-wrap {
+  position: relative;
+  width: min(1280px, 100vw);
+  margin: 18px auto 8px;
+}
+
+canvas#game {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--char);
+  border: 1px solid rgba(138,111,58,0.5);
+  border-radius: 6px;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+canvas#game:focus-visible {
+  outline: 3px solid var(--phos);
+  outline-offset: 3px;
+}
+
+/* screen-reader-only live region */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* touch MUTE button */
+.mute-btn {
+  position: absolute;
+  right: 14px;
+  bottom: 52px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px solid var(--phos);
+  background: rgba(17,18,15,0.85);
+  color: var(--phos);
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  display: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.mute-btn.on {
+  background: var(--phos);
+  color: var(--char);
+  box-shadow: 0 0 24px rgba(127,166,106,0.7);
+}
+
+@media (pointer: coarse) {
+  .mute-btn { display: block; }
+  .hint { display: none; }
+}
+
+.hint {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--bone-dim);
+}
+
+.foot {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px 24px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--bone-dim);
+  border-top: 1px solid rgba(138,111,58,0.25);
+  margin-top: 10px;
+}
+
+.noscript {
+  text-align: center;
+  padding: 40px;
+  color: var(--verm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mute-btn { transition: none; }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Static Cut — Cut the signal. Survive the silence. | Built by AAFC</title>
+<meta name="description" content="STATIC CUT: a five-minute arcade shooter where pressing MUTE rewrites the battlefield — and the final boss fights you with your own rhythm. Built by AAFC." />
+<meta property="og:title" content="STATIC CUT" />
+<meta property="og:description" content="Cut the signal. Survive the silence. A five-minute shooter where MUTE is the weapon. Built by AAFC." />
+<meta property="og:type" content="website" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="cabinet">
+    <header class="topbar">
+      <span class="brand">AAFC // SIGNAL SYSTEMS UNIT 001</span>
+      <span class="tag">CUT THE SIGNAL. SURVIVE THE SILENCE.</span>
+    </header>
+
+    <main class="stage-wrap">
+      <canvas id="game" width="1280" height="720"
+        aria-label="Static Cut game canvas. A five-minute arcade shooter. Move with WASD, aim with mouse or arrow keys, hold Space to mute the game world."
+        role="img" tabindex="0"></canvas>
+      <div id="status" class="sr-only" aria-live="polite"></div>
+      <button id="muteBtn" class="mute-btn" aria-label="Hold to mute the game world">MUTE</button>
+      <div class="hint">WASD move · mouse aim · click / Z fire · hold SPACE to MUTE · ESC pause</div>
+    </main>
+
+    <footer class="foot">
+      <span>STATIC//CUT — a broadcast laboratory in five bands</span>
+      <span>Built by AAFC</span>
+    </footer>
+  </div>
+
+  <noscript><p class="noscript">STATIC CUT needs JavaScript to run its broadcast.</p></noscript>
+
+  <script src="storage.js"></script>
+  <script src="audio.js"></script>
+  <script src="player.js"></script>
+  <script src="enemies.js"></script>
+  <script src="director.js"></script>
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
