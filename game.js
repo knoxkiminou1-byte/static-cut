@@ -210,7 +210,8 @@
         self.world.player.hp++;
         healed = true;
       }
-      self._announce('Band ' + band + ': ' + SC.BANDS[band - 1].name + (healed ? '. Hull restored.' : ''));
+      self._announce('Band ' + band + ': ' + SC.BANDS[band - 1].name + (healed ? '. Hull restored.' : '') +
+        (band === 3 ? ' Some signals only turn solid in silence — mute to reveal them.' : ''));
     };
     this._lastBand = 1;
     this.newPB = false;
@@ -303,8 +304,8 @@
         continue;
       }
       e.update(dt, w);
-      // touch damage
-      if (p.alive && e.type !== 'stationvoice' &&
+      // touch damage (intangible enemies — unmuted wraiths — pass through harmlessly)
+      if (p.alive && !e.intangible && e.type !== 'stationvoice' &&
           Math.hypot(e.x - p.x, e.y - p.y) < e.r + p.r - 2) {
         w.playerHurt();
         e.hp -= 1;

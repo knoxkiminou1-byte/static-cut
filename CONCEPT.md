@@ -57,3 +57,9 @@ Demand PASS; Human validation PASS with warning (MUTE must stay one instantly un
 ## TWO NON-NEGOTIABLES
 1. MUTE stays one instantly understandable button.
 2. Hour 1 MUTE must feel incredible or the concept dies.
+
+## 14. CREW-DRIVEN AMENDMENT — PASS 21 (2026-10-05, Grok verdict #2)
+Grok's second verdict: "the picture does not depend on the cut" — the Operator was a 32px HUD token (no turn, no failure pose, no readable silhouette), and mute was real to the ear but optional to the eye. Prescribed fix, both shipped:
+1. **WRAITH — 5th enemy** ("a frequency with no body"). Unmuted: faint shimmer, intangible — bullets pass through, contact harmless. Muted: snaps solid with a reveal shockwave + tone (the frame where a correct mute is the ONLY way the enemy becomes visible), vulnerable, kills under silence = counter-kills. Spawns in Band 3 FEEDBACK LOOP (2 wraiths replace 2 screechers; run total stays 52). Band-3 intro announces the rule.
+2. **OPERATOR POSE SET** — idle (breathing), move (body twists toward movement relative to aim + bob + motion streaks), hit (X-eyes for the fresh-hit window), overheat collapse (slump, flatlined red VU bars, static ticks). Technician read at thumbnail size: headset band, blinking antenna tip, chest dial.
+Non-negotiables preserved: MUTE is still one button; heat/overheat untouched.

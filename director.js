@@ -9,7 +9,7 @@
   var BANDS = [
     { name: 'CALIBRATION',   dur: 60,  spawn: [['screecher', 5], ['tracker', 3]] },
     { name: 'RHYTHM FAULT',  dur: 70,  spawn: [['drummer', 6], ['screecher', 4], ['tracker', 2]] },
-    { name: 'FEEDBACK LOOP', dur: 70,  spawn: [['feedback', 6], ['drummer', 4], ['screecher', 2]] },
+    { name: 'FEEDBACK LOOP', dur: 70,  spawn: [['feedback', 6], ['drummer', 4], ['wraith', 2]] },
     { name: 'SIGNAL FAILURE', dur: 65,  spawn: [['screecher', 3], ['drummer', 3], ['tracker', 3], ['feedback', 3]] },
     { name: 'STATION VOICE', dur: 999, spawn: [['tracker', 2], ['screecher', 2], ['drummer', 2], ['feedback', 2]] }
   ];

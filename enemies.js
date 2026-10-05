@@ -257,6 +257,85 @@
     return e;
   }
 
+  /* ---- WRAITH: a frequency with no body. Silence is the only way it becomes visible. ----
+   * Unmuted: faint shimmer, intangible — bullets pass through, contact is harmless.
+   * Muted: snaps solid (reveal burst), vulnerable, and kills under silence are counter-kills.
+   * This is the frame Grok asked for: a correct mute is the ONLY way the enemy becomes visible. */
+  function wraith(x, y) {
+    var e = base('wraith', x, y, 16, 2);
+    e.speed = 85;
+    e.solid = 0;            // 0 = shimmer, 1 = fully solid
+    e.revealed = false;     // reveal burst fired for this mute press
+    e.intangible = true;    // game.js skips touch damage while true
+    e.update = function (dt, w) {
+      this.t += dt;
+      var target = w.muted ? 1 : 0;
+      var prev = this.solid;
+      this.solid += (target - this.solid) * Math.min(1, dt * 7);
+      this.intangible = !w.muted;
+      if (!w.muted) this.revealed = false;
+      // the reveal frame: correct mute snaps it into the picture
+      if (w.muted && !this.revealed && prev < 0.5 && this.solid >= 0.5) {
+        this.revealed = true;
+        w.particles.shockwave(this.x, this.y, 60, '#7FA66A');
+        w.particles.burst(this.x, this.y, 10, '#7FA66A');
+        if (w.audio) w.audio._blip(660, 0.16, 0.3, 'sine');
+      }
+      toward(this, w.player.x, w.player.y, this.speed * (w.muted ? 1 : 0.35));
+      this.x += this.vx * dt; this.y += this.vy * dt;
+      this.x = Math.max(this.r, Math.min(w.W - this.r, this.x));
+      this.y = Math.max(this.r, Math.min(w.H - this.r, this.y));
+      if (this.flash > 0) this.flash -= dt;
+    };
+    e.hit = function (w) {
+      if (this.solid < 0.5) { if (w.audio) w.audio.hit(); return false; } // passes through
+      this.hp--;
+      this.flash = 0.08;
+      if (w.muted) this.counter = true; // revealed by your silence = counter-kill
+      return this.hp <= 0;
+    };
+    e.draw = function (g) {
+      var s = this.solid;
+      g.save(); g.translate(this.x, this.y);
+      if (s < 0.5) {
+        // shimmer: the thing that is only a frequency
+        g.globalAlpha = 0.10 + 0.06 * Math.sin(this.t * 9);
+        g.strokeStyle = '#7FA66A'; g.lineWidth = 2;
+        for (var k = 0; k < 3; k++) {
+          g.beginPath();
+          for (var i = 0; i <= 14; i++) {
+            var x = -this.r + (i / 14) * this.r * 2;
+            var y = Math.sin(i * 1.8 + this.t * 7 + k * 2.1) * 6;
+            if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+          }
+          g.stroke();
+        }
+      } else {
+        // solid: interference body — layered waveforms braided into mass
+        if (this.flash > 0) { g.globalAlpha = 1; }
+        g.lineWidth = 4; g.lineCap = 'round';
+        for (var b = 0; b < 4; b++) {
+          var ph = this.t * 3 + b * 1.7;
+          g.strokeStyle = this.flash > 0 ? '#ffffff' : (b % 2 ? '#7FA66A' : '#a8bf95');
+          g.globalAlpha = 0.55 + b * 0.15;
+          g.beginPath();
+          for (var j = 0; j <= 16; j++) {
+            var yy = -this.r + (j / 16) * this.r * 2;
+            var xx = Math.sin(yy * 0.35 + ph) * (this.r * 0.7) * Math.sin((j / 16) * Math.PI);
+            if (j === 0) g.moveTo(xx, yy); else g.lineTo(xx, yy);
+          }
+          g.stroke();
+        }
+        g.globalAlpha = 1;
+        // vermilion core: the heart the cut exposed
+        g.fillStyle = this.flash > 0 ? '#ffffff' : '#D94A32';
+        g.beginPath(); g.arc(0, 0, 5 + Math.sin(this.t * 6) * 1.5, 0, TAU); g.fill();
+      }
+      g.restore();
+    };
+    return e;
+  }
+
   /* ---- STATION VOICE: final boss. 3 phases driven by the player's recorded rhythm. ---- */
   function stationVoice(x, y, recording) {
     var e = base('stationvoice', x, y, 90, 60);
@@ -387,6 +466,7 @@
     drummer: drummer,
     tracker: tracker,
     feedback: feedback,
+    wraith: wraith,
     stationVoice: stationVoice
   };
 })();
