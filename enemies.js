@@ -155,7 +155,7 @@
           var o = list[i];
           if (o !== this && !o.dead && dist(this.x, this.y, o.x, o.y) < this.r + o.r + 4) {
             o.hp -= 2; o.flash = 0.1;
-            if (o.type === 'screecher') o.shield = false; // charge strips shield
+            if (o.type === 'screecher') o.shieldStripped = 1.0; // charge strips shield (persists via the shield system)
             if (o.hp <= 0) { o.dead = true; o.counter = true; w.director.onKill(o, true); }
             w.particles.burst(o.x, o.y, 8, '#7FA66A');
           }
