@@ -24,8 +24,9 @@ half-res phosphor buffer. All art/audio procedural (free-tier-only law).
 | 13 | Branding | PASS | 3s boot ident (calibration line → AAFC // SIGNAL SYSTEMS UNIT 001 plate → vermilion stamp → two-note ident → waveform→title). "Built by AAFC" in HUD + footer + title |
 | 14 | Demand/whitespace fidelity | PASS | Audio-subtraction core (destroying soundtrack as combat state) + boss replays player's recorded MUTE rhythm — no major title built around this per locked doc |
 | 15 | Final regression: syntax + unit + full-run sims | ALL PASS | — |
+| 16 | Parent code review: all 16 audio.* call sites vs Audio.prototype defs; keyboard-only aim fallback; boss 3-phase recording logic (deriveCadence/moveDirs/muteZones + fallbacks); hazard sweep hit-test math; enemy silence behaviors | 1 fix | Tracker charge set `screecher.shield=false` directly — overwritten next frame by per-frame shield recompute, so the mastery interaction silently failed. Changed to `shieldStripped = 1.0` (the real shield system, same as Feedback blasts). node --check clean, committed d1f1a2d, pushed. |
 
-Remaining passes (16–25) reserved for: human playtest tuning, Grok/ChatGPT crew verdicts,
+Remaining passes (17–25) reserved for: human playtest tuning, Grok/ChatGPT crew verdicts,
 Vercel preview live verification, and any fixes those surface.
 
 ## Judgment calls (serving the two non-negotiables)
