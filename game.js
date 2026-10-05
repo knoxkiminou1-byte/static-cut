@@ -329,7 +329,7 @@
         } else {
           for (var k = 0; k < list.length; k++) {
             var en = list[k];
-            if (en.dead) continue;
+            if (en.dead || en.intangible) continue; // intangible (unmuted wraith): bullets fly through, zero tell
             var rr = en.r + prj.r;
             if (Math.abs(en.x - prj.x) < rr && Math.abs(en.y - prj.y) < rr &&
                 Math.hypot(en.x - prj.x, en.y - prj.y) < rr) {

@@ -267,6 +267,7 @@
     e.solid = 0;            // 0 = shimmer, 1 = fully solid
     e.revealed = false;     // reveal burst fired for this mute press
     e.intangible = true;    // game.js skips touch damage while true
+    e.toneT = 1 + Math.random() * 2; // faint positional tone timer (the ONLY unmuted tell)
     e.update = function (dt, w) {
       this.t += dt;
       var target = w.muted ? 1 : 0;
@@ -274,6 +275,14 @@
       this.solid += (target - this.solid) * Math.min(1, dt * 7);
       this.intangible = !w.muted;
       if (!w.muted) this.revealed = false;
+      // the only unmuted tell is a tone, not a pixel: a faint frequency ping
+      if (!w.muted && this.solid < 0.5) {
+        this.toneT -= dt;
+        if (this.toneT <= 0) {
+          this.toneT = 2.4 + Math.random() * 1.6;
+          if (w.audio) w.audio._blip(1150 + Math.random() * 500, 0.14, 0.06, 'sine');
+        }
+      }
       // the reveal frame: correct mute snaps it into the picture
       if (w.muted && !this.revealed && prev < 0.5 && this.solid >= 0.5) {
         this.revealed = true;
@@ -288,49 +297,33 @@
       if (this.flash > 0) this.flash -= dt;
     };
     e.hit = function (w) {
-      if (this.solid < 0.5) { if (w.audio) w.audio.hit(); return false; } // passes through
+      if (this.solid < 0.5) return false; // fully intangible: no confirm, no sound, nothing
       this.hp--;
       this.flash = 0.08;
       if (w.muted) this.counter = true; // revealed by your silence = counter-kill
       return this.hp <= 0;
     };
     e.draw = function (g) {
-      var s = this.solid;
+      if (this.solid < 0.5) return; // BLANK FRAME: unmuted, the wraith is not a pixel
       g.save(); g.translate(this.x, this.y);
-      if (s < 0.5) {
-        // shimmer: the thing that is only a frequency
-        g.globalAlpha = 0.10 + 0.06 * Math.sin(this.t * 9);
-        g.strokeStyle = '#7FA66A'; g.lineWidth = 2;
-        for (var k = 0; k < 3; k++) {
-          g.beginPath();
-          for (var i = 0; i <= 14; i++) {
-            var x = -this.r + (i / 14) * this.r * 2;
-            var y = Math.sin(i * 1.8 + this.t * 7 + k * 2.1) * 6;
-            if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
-          }
-          g.stroke();
+      // solid: interference body — layered waveforms braided into mass
+      g.lineWidth = 4; g.lineCap = 'round';
+      for (var b = 0; b < 4; b++) {
+        var ph = this.t * 3 + b * 1.7;
+        g.strokeStyle = this.flash > 0 ? '#ffffff' : (b % 2 ? '#7FA66A' : '#a8bf95');
+        g.globalAlpha = 0.55 + b * 0.15;
+        g.beginPath();
+        for (var j = 0; j <= 16; j++) {
+          var yy = -this.r + (j / 16) * this.r * 2;
+          var xx = Math.sin(yy * 0.35 + ph) * (this.r * 0.7) * Math.sin((j / 16) * Math.PI);
+          if (j === 0) g.moveTo(xx, yy); else g.lineTo(xx, yy);
         }
-      } else {
-        // solid: interference body — layered waveforms braided into mass
-        if (this.flash > 0) { g.globalAlpha = 1; }
-        g.lineWidth = 4; g.lineCap = 'round';
-        for (var b = 0; b < 4; b++) {
-          var ph = this.t * 3 + b * 1.7;
-          g.strokeStyle = this.flash > 0 ? '#ffffff' : (b % 2 ? '#7FA66A' : '#a8bf95');
-          g.globalAlpha = 0.55 + b * 0.15;
-          g.beginPath();
-          for (var j = 0; j <= 16; j++) {
-            var yy = -this.r + (j / 16) * this.r * 2;
-            var xx = Math.sin(yy * 0.35 + ph) * (this.r * 0.7) * Math.sin((j / 16) * Math.PI);
-            if (j === 0) g.moveTo(xx, yy); else g.lineTo(xx, yy);
-          }
-          g.stroke();
-        }
-        g.globalAlpha = 1;
-        // vermilion core: the heart the cut exposed
-        g.fillStyle = this.flash > 0 ? '#ffffff' : '#D94A32';
-        g.beginPath(); g.arc(0, 0, 5 + Math.sin(this.t * 6) * 1.5, 0, TAU); g.fill();
+        g.stroke();
       }
+      g.globalAlpha = 1;
+      // vermilion core: the heart the cut exposed
+      g.fillStyle = this.flash > 0 ? '#ffffff' : '#D94A32';
+      g.beginPath(); g.arc(0, 0, 5 + Math.sin(this.t * 6) * 1.5, 0, TAU); g.fill();
       g.restore();
     };
     return e;
