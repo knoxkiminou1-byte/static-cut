@@ -472,6 +472,7 @@
     var d = world.director;
     this._plate(g, 'SIGNAL LOST', [
       'SCORE ' + d.score,
+      world.newPB ? 'NEW PERSONAL BEST' : '',
       'BAND ' + d.band + ' // ' + SC.BANDS[d.band - 1].name,
       'KILLS ' + d.kills + ' · COUNTER-KILLS ' + d.counterKills,
       '',

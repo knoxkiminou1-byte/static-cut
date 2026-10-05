@@ -237,7 +237,10 @@
     this.world.director.finishRun();
     this.audio.setMuted(false);
     this.audio.stop();
-    this._announce('Signal lost. Score ' + this.world.director.score + '. Press Enter to retune.');
+    var d = this.world.director;
+    this.newPB = SC.Storage.setPB(d.score, d.splits);
+    this.world.newPB = this.newPB;
+    this._announce('Signal lost. Score ' + d.score + (this.newPB ? '. New personal best.' : '.') + ' Press Enter to retune.');
   };
 
   Game.prototype.victory = function () {
@@ -249,6 +252,7 @@
     this.audio.stop();
     this.audio.victory();
     this.newPB = SC.Storage.setPB(d.score, d.splits);
+    this.world.newPB = this.newPB;
     this._announce('Transmission survived. Score ' + d.score + (this.newPB ? '. New personal best.' : '.'));
   };
 
